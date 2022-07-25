@@ -1,0 +1,60 @@
+{
+	"env": {
+		"es2021": true,
+		"node": true
+	},
+	"extends": ["standard"],
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"ecmaVersion": "latest",
+		"sourceType": "module"
+	},
+	"plugins": ["@typescript-eslint"],
+	"rules": {
+		"indent": "off",
+		"no-tabs": "off",
+		"no-console": "warn",
+		"space-before-function-paren": "off",
+		"@typescript-eslint/no-unused-vars": [
+			"warn",
+			{
+				"args": "after-used",
+				"ignoreRestSiblings": false,
+				"argsIgnorePattern": "^_.*?$"
+			}
+		],
+		"import/order": [
+			"warn",
+			{
+				"groups": [
+					"type",
+					"builtin",
+					"object",
+					"external",
+					"internal",
+					"parent",
+					"sibling",
+					"index"
+				],
+				"pathGroups": [
+					{
+						"pattern": "~/**",
+						"group": "external",
+						"position": "after"
+					}
+				],
+				"newlines-between": "always"
+			}
+		],
+		"padding-line-between-statements": [
+			"warn",
+			{ "blankLine": "always", "prev": "*", "next": "return" },
+			{ "blankLine": "always", "prev": ["const", "let", "var"], "next": "*" },
+			{
+				"blankLine": "any",
+				"prev": ["const", "let", "var"],
+				"next": ["const", "let", "var"]
+			}
+		]
+	}
+}
