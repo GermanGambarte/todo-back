@@ -1,16 +1,14 @@
-import { PrismaClient } from '@prisma/client'
+import express from 'express'
 
-const prisma = new PrismaClient()
-const main = async () => {
-	const allUsers = await prisma.user.findMany()
+import usersRouter from './src/routes/user.routes'
+import tasksRouter from './src/routes/task.routes'
+import 'dotenv/config'
+const app = express()
 
-	console.log('algo')
-}
+app.use(express.json())
+app.use('/users', usersRouter)
+app.use('/tasks', tasksRouter)
 
-main()
-	.catch(e => {
-		throw e
-	})
-	.finally(async () => {
-		await prisma.$disconnect()
-	})
+app.listen(5000, () => {
+	console.log('Hola mundo')
+})

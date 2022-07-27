@@ -7,14 +7,12 @@ const hash = async (password: string) => {
 	return await bcrypt.hash(password, salt)
 }
 
-const compare = (hashedPass: string, unhasedPass: string) => {
-	return bcrypt.compare(hashedPass, unhasedPass)
+const compare = (unhashedPass: string, hashedPass: string) => {
+	return bcrypt.compare(unhashedPass, hashedPass)
 }
 
 const generateToken = (id: string) => {
-	return jwt.sign(id, process.env.JWT_PASS!, {
-		expiresIn: process.env.JWT_EXPIRES!
-	})
+	return jwt.sign(id, process.env.JWT_PASS!)
 }
 
 export { hash, compare, generateToken }
