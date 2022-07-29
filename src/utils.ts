@@ -12,8 +12,14 @@ const compare = (unhashedPass: string, hashedPass: string) => {
 	return bcrypt.compare(unhashedPass, hashedPass)
 }
 
-const generateToken = (id: string) => {
-	return jwt.sign({ id }, process.env.JWT_PASS!, { expiresIn: '7d' })
+const generateAccessToken = (id: string) => {
+	return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET!, {
+		expiresIn: '30s'
+	})
 }
 
-export { hash, compare, generateToken }
+const generateRefreshToken = (id: string) => {
+	return jwt.sign({ id }, process.env.REFRESH_TOKEN_SECRET!)
+}
+
+export { hash, compare, generateAccessToken, generateRefreshToken }
