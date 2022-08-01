@@ -15,6 +15,8 @@ const register = async (req: Request, res: Response) => {
 	const { email, username } = req.body
 	let { password } = req.body
 
+	console.log(req.body)
+
 	if (!email || !username || !password) {
 		return res
 			.status(400)
@@ -111,9 +113,7 @@ const refresh = async (
 		const id = (<JwtPayload>decoded).id
 
 		if (err || user.id !== id) {
-			return res
-				.status(403)
-				.json({ status: 403, error: 'missing or invalid token' })
+			return res.sendStatus(403)
 		}
 		const accessToken = generateAccessToken(id)
 
@@ -123,4 +123,24 @@ const refresh = async (
 	return next()
 }
 
-export { register, login, refresh }
+const logout = async (req: Request, res: Response) => {
+	const cookies = req.cookies
+
+	if (!cookies?.token) return res.sendStatus(204)
+	const refreshToken = cookies.token as string
+	const user = await prisma.user.findUnique({
+		where: { refreshToken }
+	})
+
+	if (!user) {
+		res.clearCookie('token')
+
+		return res.sendStatus(403)
+	}
+	user.refreshToken = ''
+	res.clearCookie('token')
+
+	return res.sendStatus(204)
+}
+
+export { register, login, refresh, logout }
